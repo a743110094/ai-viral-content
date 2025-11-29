@@ -1,0 +1,652 @@
+/* Enhanced CSS with Golden Glowing Effects for Ice King AI Viral Content Machine */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base layer for consistent typography and element resets */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Custom focus styles for accessibility */
+  button:focus,
+  input:focus,
+  textarea:focus,
+  select:focus {
+    outline: 2px solid #22d3ee;
+    outline-offset: 2px;
+  }
+}
+
+/* Component layer for reusable UI patterns */
+@layer components {
+  /* Premium gradient backgrounds */
+  .bg-ice-king {
+    @apply bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900;
+  }
+  
+  /* Glass morphism effect for cards */
+  .glass-card {
+    @apply bg-slate-800/50 backdrop-blur-sm border border-slate-700;
+  }
+  
+  /* Premium button styles */
+  .btn-primary {
+    @apply bg-gradient-to-r from-yellow-400 to-orange-500 text-slate-900 font-semibold px-6 py-3 rounded-lg;
+    @apply hover:from-yellow-300 hover:to-orange-400 focus:outline-none focus:ring-2 focus:ring-yellow-400;
+    @apply transform hover:scale-105 transition-all duration-200;
+  }
+  
+  /* Form input styles */
+  .input-premium {
+    @apply bg-slate-900/70 border border-slate-600 rounded-lg px-4 py-3 text-white placeholder-slate-400;
+    @apply focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all;
+  }
+  
+  /* Quality score indicators */
+  .score-excellent {
+    @apply text-green-400;
+  }
+  
+  .score-good {
+    @apply text-yellow-400;
+  }
+  
+  .score-needs-improvement {
+    @apply text-red-400;
+  }
+}
+
+/* Golden Glow Effects and Animations */
+
+/* Golden Color Variables */
+:root {
+  --golden-primary: #FFD700;
+  --golden-secondary: #FFA500;
+  --golden-light: #FFEC8C;
+  --golden-glow: #FFF8DC;
+  --golden-shadow: rgba(255, 215, 0, 0.3);
+  --golden-intense: rgba(255, 215, 0, 0.6);
+}
+
+/* Golden Background Particles */
+.golden-particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.golden-particle {
+  position: absolute;
+  background: radial-gradient(circle, var(--golden-primary) 0%, transparent 70%);
+  border-radius: 50%;
+  opacity: 0;
+  animation: floatAndGlow 8s infinite ease-in-out;
+}
+
+.golden-particle:nth-child(1) {
+  width: 4px;
+  height: 4px;
+  top: 20%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.golden-particle:nth-child(2) {
+  width: 6px;
+  height: 6px;
+  top: 60%;
+  left: 80%;
+  animation-delay: 2s;
+}
+
+.golden-particle:nth-child(3) {
+  width: 3px;
+  height: 3px;
+  top: 40%;
+  left: 30%;
+  animation-delay: 4s;
+}
+
+.golden-particle:nth-child(4) {
+  width: 5px;
+  height: 5px;
+  top: 80%;
+  left: 60%;
+  animation-delay: 6s;
+}
+
+.golden-particle:nth-child(5) {
+  width: 4px;
+  height: 4px;
+  top: 15%;
+  left: 70%;
+  animation-delay: 1s;
+}
+
+.golden-particle:nth-child(6) {
+  width: 7px;
+  height: 7px;
+  top: 50%;
+  left: 15%;
+  animation-delay: 3s;
+}
+
+/* Golden Glow Button Effects */
+.golden-glow-button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.golden-glow-button::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, var(--golden-primary), var(--golden-secondary), var(--golden-primary));
+  background-size: 200% 200%;
+  border-radius: 12px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  animation: shimmer 2s infinite;
+}
+
+.golden-glow-button:hover::before {
+  opacity: 0.8;
+}
+
+.golden-glow-button:hover {
+  box-shadow: 
+    0 0 20px var(--golden-shadow),
+    0 0 40px var(--golden-shadow),
+    0 0 60px var(--golden-shadow);
+  transform: scale(1.05) translateY(-2px);
+}
+
+.golden-glow-button:active {
+  box-shadow: 
+    0 0 30px var(--golden-intense),
+    0 0 60px var(--golden-intense),
+    0 0 90px var(--golden-intense);
+  transform: scale(1.02);
+}
+
+/* Golden Glow Headline */
+.golden-glow-headline {
+  position: relative;
+  text-shadow: 0 0 20px var(--golden-shadow);
+}
+
+.golden-glow-headline::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background: radial-gradient(circle, var(--golden-shadow) 0%, transparent 70%);
+  z-index: -1;
+  opacity: 0;
+  animation: pulseGlow 3s infinite ease-in-out;
+}
+
+/* Golden Feature Cards */
+.golden-feature-card {
+  position: relative;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.golden-feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(145deg, var(--golden-primary) 0%, transparent 50%, var(--golden-secondary) 100%);
+  border-radius: 16px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.golden-feature-card:hover::before {
+  opacity: 0.1;
+}
+
+.golden-feature-card:hover {
+  border-color: var(--golden-primary);
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.2);
+  transform: translateY(-5px);
+}
+
+/* Golden Icon Glow */
+.golden-icon-glow {
+  filter: drop-shadow(0 0 8px var(--golden-shadow));
+  transition: filter 0.3s ease;
+}
+
+.golden-icon-glow:hover {
+  filter: drop-shadow(0 0 15px var(--golden-intense));
+}
+
+/* Golden Sparkle Effect */
+.golden-sparkle {
+  position: relative;
+}
+
+.golden-sparkle::before {
+  content: '✨';
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  font-size: 16px;
+  opacity: 0;
+  animation: sparkle 2s infinite ease-in-out;
+}
+
+/* Golden Border Glow */
+.golden-border-glow {
+  border: 1px solid transparent;
+  background: linear-gradient(var(--tw-gradient-to), var(--tw-gradient-to)) padding-box,
+              linear-gradient(45deg, var(--golden-primary), var(--golden-secondary)) border-box;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
+}
+
+/* Golden Text Gradient */
+.golden-text-gradient {
+  background: linear-gradient(45deg, var(--golden-primary), var(--golden-secondary), var(--golden-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: goldShimmer 3s infinite;
+}
+
+/* Ice King Footer Specific Effects */
+.ice-king-profile {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  position: relative;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 0 2px var(--golden-primary);
+}
+
+.ice-king-profile-container {
+  position: relative;
+  display: inline-block;
+}
+
+.ice-king-profile-container::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  background: radial-gradient(circle, var(--golden-shadow) 0%, transparent 70%);
+  border-radius: 50%;
+  z-index: -1;
+  opacity: 0.6;
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+.ice-king-profile-container:hover::before {
+  opacity: 1;
+  animation: pulseGlow 1s infinite ease-in-out;
+}
+
+.ice-king-profile:hover {
+  box-shadow: 
+    0 0 0 3px var(--golden-primary),
+    0 0 15px var(--golden-shadow),
+    0 0 25px var(--golden-shadow);
+  transform: scale(1.1);
+}
+
+/* Ice King YouTube Link Effects */
+.ice-king-link {
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.ice-king-link:hover {
+  color: var(--golden-primary);
+  text-shadow: 0 0 10px var(--golden-shadow);
+  transform: translateY(-1px);
+}
+
+.ice-king-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--golden-primary), var(--golden-secondary));
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.ice-king-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* Footer Sparkle Effects */
+.footer-sparkles {
+  position: relative;
+}
+
+.footer-sparkles::before,
+.footer-sparkles::after {
+  content: '✨';
+  position: absolute;
+  font-size: 12px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.footer-sparkles::before {
+  top: -15px;
+  left: -20px;
+  animation: sparkleFloat 3s infinite ease-in-out;
+  animation-delay: 0s;
+}
+
+.footer-sparkles::after {
+  bottom: -15px;
+  right: -20px;
+  animation: sparkleFloat 3s infinite ease-in-out;
+  animation-delay: 1.5s;
+}
+
+.footer-sparkles:hover::before,
+.footer-sparkles:hover::after {
+  animation-duration: 1s;
+}
+
+/* Sparkle Burst Effect */
+.sparkle-burst {
+  position: relative;
+  overflow: visible;
+}
+
+.sparkle-burst:hover::before {
+  content: '✨ ⭐ ✨ 💫 ✨';
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  opacity: 0;
+  animation: sparkleBurst 0.8s ease-out;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* Utility layer for custom animations and effects */
+@layer utilities {
+  /* Custom animation for loading states */
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  /* Gradient text effect */
+  .text-gradient {
+    @apply bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent;
+  }
+  
+  /* Premium shadow effects */
+  .shadow-premium {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
+  
+  /* Custom border gradients */
+  .border-gradient {
+    @apply border border-transparent;
+    background: linear-gradient(var(--tw-gradient-to), var(--tw-gradient-to)) padding-box,
+                linear-gradient(to right, #22d3ee, #3b82f6) border-box;
+  }
+}
+
+/* Golden Animation Keyframes */
+@keyframes floatAndGlow {
+  0%, 100% {
+    opacity: 0;
+    transform: translateY(0px) scale(0.8);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-20px) scale(1.2);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.8) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2) rotate(180deg);
+  }
+}
+
+@keyframes sparkleFloat {
+  0%, 100% {
+    opacity: 0;
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    opacity: 0.8;
+    transform: translateY(-10px) rotate(90deg);
+  }
+  75% {
+    opacity: 0.4;
+    transform: translateY(-5px) rotate(270deg);
+  }
+}
+
+@keyframes sparkleBurst {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.5) translateY(10px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.2) translateY(-10px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.8) translateY(-30px);
+  }
+}
+
+@keyframes goldShimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Animation classes */
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slideInFromLeft 0.4s ease-out;
+}
+
+/* Custom scrollbar styling for webkit browsers */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  @apply bg-slate-800;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-slate-600 rounded-full;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-500;
+}
+
+/* Platform-specific styling enhancements */
+.platform-pinterest {
+  @apply border-l-4 border-red-500;
+}
+
+.platform-instagram {
+  @apply border-l-4 border-purple-500;
+}
+
+.platform-twitter {
+  @apply border-l-4 border-blue-400;
+}
+
+.platform-youtube {
+  @apply border-l-4 border-red-600;
+}
+
+/* Loading animation for content generation */
+.loading-dots {
+  display: inline-block;
+}
+
+.loading-dots::after {
+  content: '';
+  animation: dots 2s linear infinite;
+}
+
+@keyframes dots {
+  0%, 20% { content: ''; }
+  40% { content: '.'; }
+  60% { content: '..'; }
+  80%, 100% { content: '...'; }
+}
+
+/* Golden Spotlight Effects */
+.golden-spotlight {
+  position: relative;
+}
+
+.golden-spotlight::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, var(--golden-shadow) 0%, transparent 70%);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.golden-spotlight:hover::before {
+  opacity: 0.3;
+}
+
+/* Responsive Golden Effects */
+@media (max-width: 768px) {
+  .golden-particle {
+    width: 2px !important;
+    height: 2px !important;
+  }
+  
+  .golden-glow-button:hover {
+    box-shadow: 0 0 15px var(--golden-shadow);
+  }
+  
+  .ice-king-profile {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* Performance optimizations */
+@media (prefers-reduced-motion: reduce) {
+  .golden-particle,
+  .golden-glow-button::before,
+  .golden-glow-headline::after,
+  .golden-sparkle::before,
+  .footer-sparkles::before,
+  .footer-sparkles::after,
+  .ice-king-profile-container::before {
+    animation: none;
+  }
+}
