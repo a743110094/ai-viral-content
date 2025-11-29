@@ -42,12 +42,12 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, onRegenerate }) => {
       {copiedItems.has(id) ? (
         <>
           <Check className="w-4 h-4" />
-          Copied!
+          已复制！
         </>
       ) : (
         <>
           <Copy className="w-4 h-4" />
-          Copy
+          复制
         </>
       )}
     </button>
@@ -64,7 +64,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, onRegenerate }) => {
       <div className="flex items-center gap-2">
         <div className="flex items-center gap-1">
           <TrendingUp className="w-4 h-4 text-cyan-400" />
-          <span className="text-blue-200 text-sm">Quality Score:</span>
+          <span className="text-blue-200 text-sm">内容质量分：</span>
           <span className={`font-semibold ${getScoreColor(score)}`}>{score}/100</span>
         </div>
       </div>
@@ -83,7 +83,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, onRegenerate }) => {
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-white flex items-center gap-2">
             <Zap className="w-5 h-5 text-yellow-400" />
-            Viral Hooks
+            病毒式开头钩子
           </h3>
         </div>
         <div className="space-y-3">
@@ -93,7 +93,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, onRegenerate }) => {
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-xs bg-cyan-500/20 text-cyan-400 px-2 py-1 rounded-full">
-                      Hook #{index + 1}
+                      钩子 #{index + 1}
                     </span>
                   </div>
                   <p className="text-white text-sm leading-relaxed">{hook}</p>
@@ -110,9 +110,9 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, onRegenerate }) => {
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-white flex items-center gap-2">
             <Eye className="w-5 h-5 text-green-400" />
-            {platform === 'pinterest' ? 'Pinterest Description' : 
-             platform === 'instagram' ? 'Instagram Script' :
-             platform === 'twitter' ? 'Twitter Thread' : 'YouTube Script'}
+            {platform === 'pinterest' ? 'Pinterest 描述文案' :
+             platform === 'instagram' ? 'Instagram 脚本内容' :
+             platform === 'twitter' ? 'Twitter 线程推文' : 'YouTube 脚本大纲'}
           </h3>
           <CopyButton text={content.mainContent} id={`${platform}-main`} />
         </div>
@@ -128,7 +128,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, onRegenerate }) => {
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-white flex items-center gap-2">
             <Target className="w-5 h-5 text-purple-400" />
-            Optimized Hashtags
+            优化标签推荐
           </h3>
           <CopyButton text={content.hashtags.join(' ')} id={`${platform}-hashtags`} />
         </div>
@@ -147,7 +147,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, onRegenerate }) => {
       {/* A/B Headlines */}
       <div className="bg-slate-800/50 rounded-lg p-6 border border-slate-700">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-white">A/B Test Headlines</h3>
+          <h3 className="text-lg font-semibold text-white">A/B 测试标题</h3>
         </div>
         <div className="space-y-3">
           {content.abHeadlines.map((headline, index) => (
@@ -156,7 +156,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, onRegenerate }) => {
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-xs bg-orange-500/20 text-orange-400 px-2 py-1 rounded-full">
-                      Variant {String.fromCharCode(65 + index)}
+                      版本 {String.fromCharCode(65 + index)}
                     </span>
                   </div>
                   <p className="text-white text-sm leading-relaxed">{headline}</p>
@@ -171,7 +171,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, onRegenerate }) => {
       {/* Image Prompts */}
       <div className="bg-slate-800/50 rounded-lg p-6 border border-slate-700">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-white">AI Image Prompts</h3>
+          <h3 className="text-lg font-semibold text-white">AI 绘图提示词</h3>
         </div>
         <div className="space-y-3">
           {content.imagePrompts.map((prompt, index) => (
@@ -180,7 +180,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, onRegenerate }) => {
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded-full">
-                      Image #{index + 1}
+                      图片 #{index + 1}
                     </span>
                   </div>
                   <p className="text-white text-sm leading-relaxed">{prompt}</p>
@@ -201,7 +201,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, onRegenerate }) => {
         <div className="mb-8 bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl p-6">
           <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
             <TrendingUp className="w-7 h-7 text-cyan-400" />
-            Content Generation Results
+            内容生成结果
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -212,11 +212,11 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, onRegenerate }) => {
                 </div>
                 <div>
                   <p className="text-green-400 font-semibold text-lg">{results.analytics.overallQualityScore}/100</p>
-                  <p className="text-blue-200 text-sm">Overall Quality Score</p>
+                  <p className="text-blue-200 text-sm">综合质量评分</p>
                 </div>
               </div>
             </div>
-            
+
             <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-600">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
@@ -224,11 +224,11 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, onRegenerate }) => {
                 </div>
                 <div>
                   <p className="text-purple-400 font-semibold text-lg">{Math.round(results.analytics.viralPotential)}/100</p>
-                  <p className="text-blue-200 text-sm">Viral Potential</p>
+                  <p className="text-blue-200 text-sm">爆款潜力值</p>
                 </div>
               </div>
             </div>
-            
+
             <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-600">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
@@ -236,7 +236,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, onRegenerate }) => {
                 </div>
                 <div>
                   <p className="text-blue-400 font-semibold text-lg">{results.analytics.totalGenerationTime}ms</p>
-                  <p className="text-blue-200 text-sm">Generation Time</p>
+                  <p className="text-blue-200 text-sm">生成耗时</p>
                 </div>
               </div>
             </div>

@@ -20,19 +20,19 @@ const InputForm: React.FC<InputFormProps> = ({ onGenerate, isLoading }) => {
 
   const validateForm = (): boolean => {
     const newErrors: Partial<ContentInputs> = {};
-    
+
     if (!inputs.niche.trim()) {
-      newErrors.niche = 'Niche/Topic is required';
+      newErrors.niche = '请输入你的领域或话题';
     }
-    
+
     if (!inputs.targetAudience.trim()) {
-      newErrors.targetAudience = 'Target Audience is required';
+      newErrors.targetAudience = '请输入目标受众';
     }
-    
+
     if (inputs.productLink && !inputs.productLink.match(/^https?:\/\/.+/)) {
-      newErrors.productLink = 'Please enter a valid URL';
+      newErrors.productLink = '请输入有效的网址链接';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -59,11 +59,11 @@ const InputForm: React.FC<InputFormProps> = ({ onGenerate, isLoading }) => {
           <div className="flex items-center justify-center gap-3 mb-4">
             <Zap className="w-8 h-8 text-yellow-400" />
             <h1 className="text-3xl md:text-4xl font-bold text-white">
-              Content Generation Input
+              内容生成配置
             </h1>
           </div>
           <p className="text-blue-200 text-lg">
-            Transform your niche into viral content across all platforms
+            将你的领域转化为全平台爆款内容
           </p>
         </div>
 
@@ -75,13 +75,13 @@ const InputForm: React.FC<InputFormProps> = ({ onGenerate, isLoading }) => {
               <label className="block text-sm font-medium text-blue-200 mb-3">
                 <span className="flex items-center gap-2">
                   <span className="w-2 h-2 bg-green-400 rounded-full"></span>
-                  Niche/Topic *
+                  你的领域/话题 *
                 </span>
               </label>
               <textarea
                 value={inputs.niche}
                 onChange={(e) => handleInputChange('niche', e.target.value)}
-                placeholder="e.g., Fitness for busy moms, AI productivity tools for entrepreneurs, Personal finance for college students..."
+                placeholder="例如：忙碌妈妈的健身方案、企业家的AI生产力工具、大学生理财指南..."
                 className={`w-full h-24 bg-slate-900/70 border rounded-lg px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all ${
                   errors.niche ? 'border-red-500' : 'border-slate-600'
                 }`}
@@ -95,14 +95,14 @@ const InputForm: React.FC<InputFormProps> = ({ onGenerate, isLoading }) => {
               <label className="block text-sm font-medium text-blue-200 mb-3">
                 <span className="flex items-center gap-2">
                   <span className="w-2 h-2 bg-cyan-400 rounded-full"></span>
-                  Product/Affiliate Link
+                  产品/推广链接
                 </span>
               </label>
               <input
                 type="url"
                 value={inputs.productLink}
                 onChange={(e) => handleInputChange('productLink', e.target.value)}
-                placeholder="https://your-product-link.com"
+                placeholder="https://你的产品链接.com"
                 className={`w-full bg-slate-900/70 border rounded-lg px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all ${
                   errors.productLink ? 'border-red-500' : 'border-slate-600'
                 }`}
@@ -116,13 +116,13 @@ const InputForm: React.FC<InputFormProps> = ({ onGenerate, isLoading }) => {
               <label className="block text-sm font-medium text-blue-200 mb-3">
                 <span className="flex items-center gap-2">
                   <span className="w-2 h-2 bg-purple-400 rounded-full"></span>
-                  Target Audience *
+                  目标受众 *
                 </span>
               </label>
               <textarea
                 value={inputs.targetAudience}
                 onChange={(e) => handleInputChange('targetAudience', e.target.value)}
-                placeholder="e.g., Working mothers aged 25-40 who struggle with time management, Tech entrepreneurs looking to automate their workflows..."
+                placeholder="例如：25-40岁的时间管理困难职场妈妈、寻求工作流程自动化的科技企业家..."
                 className={`w-full h-24 bg-slate-900/70 border rounded-lg px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all ${
                   errors.targetAudience ? 'border-red-500' : 'border-slate-600'
                 }`}
@@ -134,7 +134,7 @@ const InputForm: React.FC<InputFormProps> = ({ onGenerate, isLoading }) => {
             {/* Tone/Personality */}
             <div>
               <label className="block text-sm font-medium text-blue-200 mb-3">
-                Tone/Personality
+                文案风格/调性
               </label>
               <select
                 value={inputs.tone}
@@ -142,19 +142,19 @@ const InputForm: React.FC<InputFormProps> = ({ onGenerate, isLoading }) => {
                 className="w-full bg-slate-900/70 border border-slate-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all"
                 disabled={isLoading}
               >
-                <option value="Professional">Professional</option>
-                <option value="Humorous">Humorous</option>
-                <option value="Luxury">Luxury</option>
-                <option value="Inspiring">Inspiring</option>
-                <option value="Aggressive Marketing">Aggressive Marketing</option>
-                <option value="Friendly Mentor">Friendly Mentor</option>
+                <option value="Professional">专业权威</option>
+                <option value="Humorous">幽默风趣</option>
+                <option value="Luxury">高端奢华</option>
+                <option value="Inspiring">励志激励</option>
+                <option value="Aggressive Marketing">强势营销</option>
+                <option value="Friendly Mentor">亲切导师</option>
               </select>
             </div>
 
             {/* Main Goal */}
             <div>
               <label className="block text-sm font-medium text-blue-200 mb-3">
-                Main Goal
+                主要目标
               </label>
               <select
                 value={inputs.mainGoal}
@@ -162,10 +162,10 @@ const InputForm: React.FC<InputFormProps> = ({ onGenerate, isLoading }) => {
                 className="w-full bg-slate-900/70 border border-slate-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all"
                 disabled={isLoading}
               >
-                <option value="Grow Followers">Grow Followers</option>
-                <option value="Drive Affiliate Clicks">Drive Affiliate Clicks</option>
-                <option value="Sell Product">Sell Product</option>
-                <option value="Build Brand Awareness">Build Brand Awareness</option>
+                <option value="Grow Followers">涨粉引流</option>
+                <option value="Drive Affiliate Clicks">推广点击</option>
+                <option value="Sell Product">产品销售</option>
+                <option value="Build Brand Awareness">品牌曝光</option>
               </select>
             </div>
           </div>
@@ -180,12 +180,12 @@ const InputForm: React.FC<InputFormProps> = ({ onGenerate, isLoading }) => {
               {isLoading ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" />
-                  Generating...
+                  正在生成...
                 </>
               ) : (
                 <>
                   <Zap className="w-5 h-5" />
-                  Generate Viral Content
+                  生成爆款内容
                 </>
               )}
             </button>
