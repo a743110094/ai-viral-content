@@ -33,7 +33,7 @@ const FunLoadingAnimation: React.FC<FunLoadingAnimationProps> = ({
   useEffect(() => {
     const stepInterval = setInterval(() => {
       setCurrentStep(prev => (prev + 1) % steps.length);
-    }, 2500); // 减慢节奏，2.5秒切换一步
+    }, 6000); // 大幅减慢节奏，6秒切换一步
 
     return () => clearInterval(stepInterval);
   }, [steps.length]);
@@ -44,7 +44,7 @@ const FunLoadingAnimation: React.FC<FunLoadingAnimationProps> = ({
         if (prev === '...') return '';
         return prev + '.';
       });
-    }, 600); // 减慢点号动画
+    }, 1200); // 进一步减慢点号动画，配合更慢的步骤切换
 
     return () => clearInterval(dotsInterval);
   }, []);
@@ -54,10 +54,11 @@ const FunLoadingAnimation: React.FC<FunLoadingAnimationProps> = ({
 
   return (
     <div className={`min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center relative overflow-hidden ${className}`}>
-      {/* 简约背景元素 */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+      {/* 精致的背景元素 */}
+      <div className="absolute inset-0 opacity-20">
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-gradient-to-r from-purple-500/8 to-pink-500/8 rounded-full blur-3xl subtle-float"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-gradient-to-r from-blue-500/8 to-cyan-500/8 rounded-full blur-3xl subtle-float" style={{ animationDelay: '3s' }}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-indigo-500/5 to-purple-500/5 rounded-full blur-3xl subtle-float" style={{ animationDelay: '6s' }}></div>
       </div>
 
       {/* 主要内容 */}
@@ -77,7 +78,7 @@ const FunLoadingAnimation: React.FC<FunLoadingAnimationProps> = ({
 
         {/* 主要动画卡片 */}
         <div className="breathing-card">
-          <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
+          <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl subtle-border-glow">
             {/* 中心图标 - 呼吸动画 */}
             <div className="flex justify-center mb-6">
               <div className="relative">
@@ -93,12 +94,12 @@ const FunLoadingAnimation: React.FC<FunLoadingAnimationProps> = ({
               <h3 className="text-xl font-medium text-white mb-3">
                 {currentStepData.text}{dots}
               </h3>
-              <div className="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
+              <div className="w-full bg-white/10 rounded-full h-1.5 overflow-hidden backdrop-blur-sm">
                 <div 
-                  className={`h-full bg-gradient-to-r ${currentStepData.color} rounded-full transition-all duration-1000`}
+                  className={`h-full bg-gradient-to-r ${currentStepData.color} rounded-full transition-all duration-2000 ease-out`}
                   style={{ 
                     width: `${((currentStep + 1) / steps.length) * 100}%`,
-                    animation: 'pulse 2s ease-in-out infinite'
+                    animation: 'shimmer 4s ease-in-out infinite'
                   }}
                 ></div>
               </div>
@@ -135,58 +136,101 @@ const FunLoadingAnimation: React.FC<FunLoadingAnimationProps> = ({
             opacity: 1;
           }
           50% {
-            transform: scale(1.02);
-            opacity: 0.9;
+            transform: scale(1.015);
+            opacity: 0.95;
           }
         }
         
         @keyframes breathing-card {
           0%, 100% {
             transform: scale(1) translateY(0);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
           }
           50% {
-            transform: scale(1.01) translateY(-2px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            transform: scale(1.005) translateY(-1px);
+            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.35);
           }
         }
         
         @keyframes breathing-icon {
           0%, 100% {
             transform: scale(1) rotate(0deg);
-            filter: brightness(1);
+            filter: brightness(1) saturate(1);
           }
           50% {
-            transform: scale(1.05) rotate(2deg);
-            filter: brightness(1.1);
+            transform: scale(1.02) rotate(1deg);
+            filter: brightness(1.05) saturate(1.1);
           }
         }
         
         @keyframes breathing-glow {
           0%, 100% {
             transform: scale(1);
-            opacity: 0.3;
+            opacity: 0.2;
           }
           50% {
-            transform: scale(1.1);
-            opacity: 0.5;
+            transform: scale(1.05);
+            opacity: 0.35;
+          }
+        }
+        
+        @keyframes subtle-float {
+          0%, 100% {
+            transform: translateY(0px) scale(1);
+            opacity: 0.15;
+          }
+          33% {
+            transform: translateY(-10px) scale(1.02);
+            opacity: 0.2;
+          }
+          66% {
+            transform: translateY(5px) scale(0.98);
+            opacity: 0.1;
+          }
+        }
+        
+        @keyframes shimmer {
+          0%, 100% {
+            filter: brightness(1) saturate(1);
+          }
+          50% {
+            filter: brightness(1.1) saturate(1.2);
+          }
+        }
+        
+        @keyframes subtle-border-glow {
+          0%, 100% {
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+          }
+          50% {
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25), 0 0 20px rgba(255, 255, 255, 0.05);
           }
         }
 
         .breathing-animation {
-          animation: breathing 4s ease-in-out infinite;
+          animation: breathing 8s ease-in-out infinite;
         }
         
         .breathing-card {
-          animation: breathing-card 3s ease-in-out infinite;
+          animation: breathing-card 6s ease-in-out infinite;
         }
         
         .breathing-icon {
-          animation: breathing-icon 2.5s ease-in-out infinite;
+          animation: breathing-icon 5s ease-in-out infinite;
         }
         
         .breathing-glow {
-          animation: breathing-glow 3s ease-in-out infinite;
+          animation: breathing-glow 7s ease-in-out infinite;
+        }
+        
+        .subtle-float {
+          animation: subtle-float 12s ease-in-out infinite;
+        }
+        
+        .subtle-border-glow {
+          animation: subtle-border-glow 10s ease-in-out infinite;
         }
       `}</style>
     </div>
