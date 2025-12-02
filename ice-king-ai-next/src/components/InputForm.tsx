@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Zap, ArrowLeft, Smartphone, Brain } from 'lucide-react';
 import { ContentInputs, PlatformType, PLATFORM_CONFIGS, DEFAULT_SELECTED_PLATFORMS } from '@/types/content';
 import FunLoadingAnimation from './FunLoadingAnimation';
+import SimpleAnalyzeLoading from './SimpleAnalyzeLoading';
 
 interface InputFormProps {
   onGenerate: (inputs: ContentInputs) => Promise<void>;
@@ -282,7 +283,7 @@ const InputForm: React.FC<InputFormProps> = ({ onGenerate, isLoading, onBack }) 
                     title="智能分析目标受众"
                   >
                     {isAnalyzingAudience ? (
-                      <FunLoadingAnimation type="analyze" className="text-xs" />
+                      <SimpleAnalyzeLoading className="text-xs" />
                     ) : (
                       <>
                         <Brain className="w-3 h-3" />
@@ -317,7 +318,7 @@ const InputForm: React.FC<InputFormProps> = ({ onGenerate, isLoading, onBack }) 
                     title="智能分析产品卖点"
                   >
                     {isAnalyzingSellingPoints ? (
-                      <FunLoadingAnimation type="analyze" className="text-xs" />
+                      <SimpleAnalyzeLoading className="text-xs" />
                     ) : (
                       <>
                         <Brain className="w-3 h-3" />
