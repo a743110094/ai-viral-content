@@ -7,6 +7,7 @@ class CacheService {
 
   constructor() {
     console.log('🚀 CacheService initialized with memory cache only (Redis disabled)');
+    console.log('💾 Using memory cache for better performance and stability');
   }
 
   async get<T>(key: string): Promise<T | null> {
