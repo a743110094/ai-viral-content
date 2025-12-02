@@ -1,0 +1,25 @@
+{
+  "timestamp": "2025-12-01T17:51:15.995Z",
+  "summary": {
+    "total": 3,
+    "success": 0,
+    "failed": 3
+  },
+  "results": [
+    {
+      "name": "中国平台测试 - 微信、微博、小红书、抖音",
+      "success": false,
+      "error": "HTTP 400: Bad Request"
+    },
+    {
+      "name": "国际平台测试 - Pinterest、Instagram、Twitter、YouTube",
+      "success": false,
+      "error": "HTTP 500: Internal Server Error"
+    },
+    {
+      "name": "混合平台测试 - 所有8个平台",
+      "success": false,
+      "error": "HTTP 400: Bad Request"
+    }
+  ]
+}

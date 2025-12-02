@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>趣味加载动画演示</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 自定义动画 */
+        .loading-pulse {
+            animation: loadingPulse 2s ease-in-out infinite;
+        }
+
+        .loading-bounce {
+            animation: loadingBounce 1.5s ease-in-out infinite;
+        }
+
+        .loading-gradient-text {
+            background: linear-gradient(45deg, #8b5cf6, #06b6d4, #10b981, #f59e0b, #ef4444);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: loadingGradient 3s ease-in-out infinite;
+        }
+
+        .loading-progress {
+            background: linear-gradient(90deg, #8b5cf6, #06b6d4, #10b981, #f59e0b, #ef4444);
+            background-size: 300% 100%;
+            animation: loadingProgress 2s ease-in-out infinite;
+        }
+
+        @keyframes loadingPulse {
+            0%, 100% {
+                opacity: 0.7;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes loadingBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        @keyframes loadingGradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes loadingProgress {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .step-icon {
+            transition: all 0.3s ease;
+        }
+
+        .step-icon.active {
+            transform: scale(1.2);
+            filter: drop-shadow(0 0 8px currentColor);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-white mb-4">
+                🎨 <span class="loading-gradient-text">趣味加载动画演示</span>
+            </h1>
+            <p class="text-blue-200">新的动画让等待变得更加有趣，减少焦虑感！</p>
+        </div>
+
+        <div class="max-w-2xl mx-auto space-y-8">
+            <!-- 主内容生成加载动画 -->
+            <div class="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl p-6">
+                <h2 class="text-xl font-semibold text-white mb-4">🚀 内容生成加载动画</h2>
+                <div class="flex items-center gap-3 p-4 bg-slate-900/70 rounded-lg">
+                    <div class="relative">
+                        <div class="absolute inset-0 animate-ping">
+                            <svg class="w-6 h-6 text-purple-400 opacity-75" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M9.504 1.132a1 1 0 01.992 0l1.75 1a1 1 0 11-.992 1.736L10 3.152l-1.254.716a1 1 0 11-.992-1.736l1.75-1zM5.618 4.504a1 1 0 01-.372 1.364L5.016 6l.23.132a1 1 0 11-.992 1.736L3 7.723V8a1 1 0 01-2 0V6a.996.996 0 01.52-.878l1.734-.99a1 1 0 011.364.372zm8.764 0a1 1 0 011.364-.372l1.734.99A1.002 1.002 0 0118 6v2a1 1 0 11-2 0v-.277l-1.254.145a1 1 0 11-.992-1.736l.23-.132-.23-.132a1 1 0 01-.372-1.364zm-7 4a1 1 0 011.364-.372L10 8.848l1.254-.716a1 1 0 11.992 1.736L11 10.723V12a1 1 0 11-2 0v-1.277l-1.246-.855a1 1 0 01-.372-1.364zM3 11a1 1 0 011 1v1.277l1.246.855a1 1 0 11-.992 1.736l-1.75-1A1 1 0 012 14v-2a1 1 0 011-1zm14 0a1 1 0 011 1v1.277l-1.254.144a1 1 0 01-.992-1.736l1.75-1A1 1 0 0118 14v-2a1 1 0 011-1zm-9.618 5.504a1 1 0 011.364-.372l.254.145V16a1 1 0 112 0v.277l.254-.145a1 1 0 11.992 1.736l-1.735.992a.995.995 0 01-1.022 0l-1.735-.992a1 1 0 01-.372-1.364z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <svg class="w-6 h-6 text-purple-400 loading-bounce" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-sm font-medium text-purple-400 loading-gradient-text">
+                            分析您的需求...
+                        </span>
+                        <div class="w-32 h-1 bg-slate-700 rounded-full mt-1 overflow-hidden">
+                            <div class="h-full loading-progress rounded-full" style="width: 60%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 分析加载动画 -->
+            <div class="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl p-6">
+                <h2 class="text-xl font-semibold text-white mb-4">🧠 智能分析加载动画</h2>
+                <div class="flex items-center gap-3 p-4 bg-slate-900/70 rounded-lg">
+                    <div class="relative">
+                        <div class="absolute inset-0 animate-ping">
+                            <svg class="w-5 h-5 text-cyan-400 opacity-75" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <svg class="w-5 h-5 text-cyan-400 loading-bounce" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-sm font-medium text-cyan-400 loading-gradient-text">
+                            深度分析中...
+                        </span>
+                        <div class="w-24 h-1 bg-slate-700 rounded-full mt-1 overflow-hidden">
+                            <div class="h-full loading-progress rounded-full" style="width: 40%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 步骤指示器演示 -->
+            <div class="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl p-6">
+                <h2 class="text-xl font-semibold text-white mb-4">📊 动态步骤指示器</h2>
+                <div class="space-y-3">
+                    <div class="flex items-center gap-3 step-icon active">
+                        <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold">1</div>
+                        <span class="text-white">需求分析</span>
+                        <div class="ml-auto w-4 h-4 text-green-400">✓</div>
+                    </div>
+                    <div class="flex items-center gap-3 step-icon active">
+                        <div class="w-8 h-8 bg-cyan-500 rounded-full flex items-center justify-center text-white font-bold loading-pulse">2</div>
+                        <span class="text-white loading-gradient-text">受众匹配</span>
+                        <div class="ml-auto">
+                            <div class="w-4 h-4 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 step-icon">
+                        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold opacity-50">3</div>
+                        <span class="text-slate-400">内容生成</span>
+                    </div>
+                    <div class="flex items-center gap-3 step-icon">
+                        <div class="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold opacity-50">4</div>
+                        <span class="text-slate-400">优化完善</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 装饰性粒子效果 -->
+            <div class="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl p-6">
+                <h2 class="text-xl font-semibold text-white mb-4">✨ 装饰性粒子效果</h2>
+                <div class="flex justify-center items-center h-32 bg-slate-900/70 rounded-lg relative overflow-hidden">
+                    <div class="flex gap-2">
+                        <div class="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+                        <div class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" style="animation-delay: 0.2s;"></div>
+                        <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse" style="animation-delay: 0.4s;"></div>
+                        <div class="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" style="animation-delay: 0.6s;"></div>
+                        <div class="w-2 h-2 bg-red-400 rounded-full animate-pulse" style="animation-delay: 0.8s;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 使用说明 -->
+            <div class="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl p-6">
+                <h2 class="text-xl font-semibold text-white mb-4">💡 新特性说明</h2>
+                <div class="space-y-3 text-blue-200">
+                    <div class="flex items-start gap-3">
+                        <span class="text-yellow-400">🎯</span>
+                        <div>
+                            <strong class="text-white">动态进度显示</strong><br>
+                            实时显示处理进度，让用户了解当前状态
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="text-green-400">🌈</span>
+                        <div>
+                            <strong class="text-white">渐变色彩动画</strong><br>
+                            彩虹渐变效果，让等待过程更加赏心悦目
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="text-blue-400">⚡</span>
+                        <div>
+                            <strong class="text-white">分步指示器</strong><br>
+                            清晰显示处理步骤，提升用户预期管理
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="text-purple-400">✨</span>
+                        <div>
+                            <strong class="text-white">装饰性粒子</strong><br>
+                            微妙的视觉反馈，增加趣味性
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-8">
+            <p class="text-slate-400">这些动画现在已经在实际的内容生成和智能分析功能中生效！</p>
+        </div>
+    </div>
+
+    <script>
+        // 简单的动画演示切换
+        let currentStep = 0;
+        const steps = document.querySelectorAll('.step-icon');
+        
+        setInterval(() => {
+            steps.forEach(step => step.classList.remove('active'));
+            steps[currentStep].classList.add('active');
+            currentStep = (currentStep + 1) % steps.length;
+        }, 2000);
+    </script>
+</body>
+</html>

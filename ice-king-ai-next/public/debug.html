@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API调试测试 - Ice King AI</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 30px;
+            backdrop-filter: blur(16px);
+        }
+        h1 {
+            text-align: center;
+            color: #60a5fa;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #cbd5e1;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            background: rgba(31, 41, 55, 0.8);
+            color: white;
+            font-size: 14px;
+        }
+        textarea {
+            height: 80px;
+            resize: vertical;
+        }
+        button {
+            background: linear-gradient(45deg, #f59e0b, #f97316);
+            color: #1f2937;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background: linear-gradient(45deg, #d97706, #ea580c);
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(31, 41, 55, 0.6);
+            border-radius: 8px;
+            border: 1px solid #374151;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .success {
+            border-color: #10b981;
+            color: #10b981;
+        }
+        .error {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #374151;
+            border-radius: 50%;
+            border-top-color: #60a5fa;
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .info {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #374151;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            color: #9ca3af;
+        }
+        .tab.active {
+            color: #60a5fa;
+            border-bottom-color: #60a5fa;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 API调试测试工具</h1>
+        
+        <div class="info">
+            <strong>功能说明：</strong>
+            <ul>
+                <li><strong>普通生成</strong>：使用缓存，正常API调用</li>
+                <li><strong>强制API调用</strong>：跳过缓存，强制调用大模型API</li>
+                <li><strong>简单测试</strong>：最小化输入的快速API测试</li>
+            </ul>
+            <p><strong>注意</strong>：强制API调用会产生真实费用，请谨慎使用！</p>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('full')">完整测试</div>
+            <div class="tab" onclick="switchTab('force')">强制API调用</div>
+            <div class="tab" onclick="switchTab('simple')">简单测试</div>
+        </div>
+
+        <!-- 完整测试 -->
+        <div id="full" class="tab-content active">
+            <form id="fullForm">
+                <div class="form-group">
+                    <label>领域/话题 *</label>
+                    <textarea id="fullNiche" placeholder="例如：AI生产力工具"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>目标受众 *</label>
+                    <textarea id="fullAudience" placeholder="例如：科技创业者"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>产品链接</label>
+                    <input type="url" id="fullProduct" placeholder="https://example.com">
+                </div>
+                <div class="form-group">
+                    <label>文案风格</label>
+                    <select id="fullTone">
+                        <option value="Professional">专业权威</option>
+                        <option value="Humorous">幽默风趣</option>
+                        <option value="Luxury">高端奢华</option>
+                        <option value="Inspiring">励志激励</option>
+                        <option value="Aggressive Marketing">强势营销</option>
+                        <option value="Friendly Mentor">亲切导师</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>营销目标</label>
+                    <select id="fullGoal">
+                        <option value="Grow Followers">涨粉引流</option>
+                        <option value="Drive Affiliate Clicks">推广点击</option>
+                        <option value="Sell Product">产品销售</option>
+                        <option value="Build Brand Awareness">品牌曝光</option>
+                    </select>
+                </div>
+                <button type="submit">🚀 生成内容 (使用缓存)</button>
+            </form>
+        </div>
+
+        <!-- 强制API调用 -->
+        <div id="force" class="tab-content">
+            <form id="forceForm">
+                <div class="form-group">
+                    <label>领域/话题 *</label>
+                    <textarea id="forceNiche" placeholder="例如：AI生产力工具"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>目标受众 *</label>
+                    <textarea id="forceAudience" placeholder="例如：科技创业者"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>产品链接</label>
+                    <input type="url" id="forceProduct" placeholder="https://example.com">
+                </div>
+                <div class="form-group">
+                    <label>文案风格</label>
+                    <select id="forceTone">
+                        <option value="Professional">专业权威</option>
+                        <option value="Humorous">幽默风趣</option>
+                        <option value="Luxury">高端奢华</option>
+                        <option value="Inspiring">励志激励</option>
+                        <option value="Aggressive Marketing">强势营销</option>
+                        <option value="Friendly Mentor">亲切导师</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>营销目标</label>
+                    <select id="forceGoal">
+                        <option value="Grow Followers">涨粉引流</option>
+                        <option value="Drive Affiliate Clicks">推广点击</option>
+                        <option value="Sell Product">产品销售</option>
+                        <option value="Build Brand Awareness">品牌曝光</option>
+                    </select>
+                </div>
+                <button type="submit">⚡ 强制API调用 (跳过缓存)</button>
+            </form>
+        </div>
+
+        <!-- 简单测试 -->
+        <div id="simple" class="tab-content">
+            <div class="info">
+                <p>使用默认参数进行快速API测试，这将调用真实的API并产生费用。</p>
+            </div>
+            <button onclick="simpleTest()">🔬 简单API测试</button>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>正在调用API，请稍候...</p>
+        </div>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            // 隐藏所有tab内容
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // 移除所有tab的active类
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // 显示选中的tab内容
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('result').innerHTML = '';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        function showResult(data, isError = false) {
+            hideLoading();
+            const resultDiv = document.getElementById('result');
+            resultDiv.className = 'result ' + (isError ? 'error' : 'success');
+            resultDiv.textContent = JSON.stringify(data, null, 2);
+        }
+
+        // 完整表单提交
+        document.getElementById('fullForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const inputs = {
+                niche: document.getElementById('fullNiche').value,
+                targetAudience: document.getElementById('fullAudience').value,
+                productLink: document.getElementById('fullProduct').value,
+                tone: document.getElementById('fullTone').value,
+                mainGoal: document.getElementById('fullGoal').value
+            };
+
+            showLoading();
+            
+            try {
+                const response = await fetch('/api/content/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        inputs,
+                        config: {
+                            forceApiCall: false
+                        }
+                    })
+                });
+                
+                const data = await response.json();
+                showResult(data, !response.ok);
+            } catch (error) {
+                showResult({ error: error.message }, true);
+            }
+        });
+
+        // 强制API表单提交
+        document.getElementById('forceForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const inputs = {
+                niche: document.getElementById('forceNiche').value,
+                targetAudience: document.getElementById('forceAudience').value,
+                productLink: document.getElementById('forceProduct').value,
+                tone: document.getElementById('forceTone').value,
+                mainGoal: document.getElementById('forceGoal').value
+            };
+
+            showLoading();
+            
+            try {
+                const response = await fetch('/api/content/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        inputs,
+                        config: {
+                            forceApiCall: true
+                        }
+                    })
+                });
+                
+                const data = await response.json();
+                showResult(data, !response.ok);
+            } catch (error) {
+                showResult({ error: error.message }, true);
+            }
+        });
+
+        // 简单测试
+        async function simpleTest() {
+            showLoading();
+            
+            try {
+                const response = await fetch('/api/debug/generate?test=api');
+                const data = await response.json();
+                showResult(data, !response.ok);
+            } catch (error) {
+                showResult({ error: error.message }, true);
+            }
+        }
+    </script>
+</body>
+</html>

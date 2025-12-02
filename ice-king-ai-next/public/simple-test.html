@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简单API测试 - Ice King AI</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 30px;
+            backdrop-filter: blur(16px);
+        }
+        h1 {
+            text-align: center;
+            color: #60a5fa;
+            margin-bottom: 30px;
+        }
+        button {
+            background: linear-gradient(45deg, #f59e0b, #f97316);
+            color: #1f2937;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        button:hover:not(:disabled) {
+            background: linear-gradient(45deg, #d97706, #ea580c);
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .console {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 12px;
+            color: #00ff00;
+            height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            margin-top: 20px;
+        }
+        .console-line {
+            margin: 2px 0;
+        }
+        .info {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #374151;
+            border-radius: 50%;
+            border-top-color: #60a5fa;
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔬 简单API测试工具</h1>
+        
+        <div class="info">
+            <strong>功能说明：</strong>
+            <p>这是一个最简单直接的API测试，将调用真实的OpenAI API并显示详细的控制台日志。</p>
+            <p><strong>注意：</strong>这将产生真实的API调用费用，请谨慎使用！</p>
+        </div>
+
+        <button id="testBtn" onclick="runTest()">
+            🚀 开始简单API测试
+        </button>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>正在调用API，请打开浏览器控制台查看详细日志...</p>
+        </div>
+
+        <div class="console" id="console">
+            <div class="console-line">点击按钮开始测试，控制台日志将显示在这里...</div>
+        </div>
+
+        <div class="info">
+            <strong>如何使用：</strong>
+            <ol>
+                <li>点击"开始简单API测试"按钮</li>
+                <li><strong>重要：</strong>打开浏览器开发者工具（F12）查看控制台</li>
+                <li>观察详细的API调用日志和响应</li>
+                <li>如果看到"API测试成功"，说明真正调用了大模型API</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        let isRunning = false;
+
+        function addToConsole(message, type = 'info') {
+            const console = document.getElementById('console');
+            const line = document.createElement('div');
+            line.className = 'console-line';
+            
+            // 根据类型设置颜色
+            if (type === 'error') {
+                line.style.color = '#ff6b6b';
+            } else if (type === 'success') {
+                line.style.color = '#51cf66';
+            } else if (type === 'warning') {
+                line.style.color = '#ffd43b';
+            }
+            
+            line.textContent = `${new Date().toLocaleTimeString()} ${message}`;
+            console.appendChild(line);
+            console.scrollTop = console.scrollHeight;
+        }
+
+        function clearConsole() {
+            document.getElementById('console').innerHTML = '';
+        }
+
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('testBtn').disabled = true;
+            isRunning = true;
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('testBtn').disabled = false;
+            isRunning = false;
+        }
+
+        async function runTest() {
+            if (isRunning) return;
+            
+            clearConsole();
+            addToConsole('🚀 开始简单API测试...', 'info');
+            addToConsole('📅 测试时间: ' + new Date().toISOString(), 'info');
+            addToConsole('⚠️ 请打开浏览器控制台（F12）查看详细日志', 'warning');
+            addToConsole('🌐 正在调用 /api/simple-test...', 'info');
+            
+            showLoading();
+            
+            try {
+                const response = await fetch('/api/simple-test');
+                const data = await response.json();
+                
+                addToConsole('✅ API调用完成!', 'success');
+                addToConsole('📊 响应状态: ' + response.status, 'info');
+                addToConsole('🎯 响应数据: ' + JSON.stringify(data, null, 2), 'info');
+                
+                if (data.success) {
+                    addToConsole('🎉 测试成功！系统真正调用了大模型API', 'success');
+                    addToConsole('📝 AI响应: ' + data.data.response, 'info');
+                    addToConsole('⏱️ 耗时: ' + data.data.duration + 'ms', 'info');
+                } else {
+                    addToConsole('❌ 测试失败: ' + data.error, 'error');
+                }
+                
+            } catch (error) {
+                addToConsole('❌ 网络错误: ' + error.message, 'error');
+                addToConsole('🔍 错误详情: ' + error.toString(), 'error');
+            } finally {
+                hideLoading();
+                addToConsole('🏁 测试结束', 'info');
+            }
+        }
+
+        // 页面加载完成后的提示
+        window.addEventListener('load', function() {
+            addToConsole('📱 页面加载完成', 'info');
+            addToConsole('💡 提示: 按F12打开开发者工具查看控制台', 'info');
+        });
+    </script>
+</body>
+</html>
