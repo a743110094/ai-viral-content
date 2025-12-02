@@ -39,7 +39,7 @@ const getPlatformIcon = (platform: PlatformType) => {
     wechat: Instagram, // fallback for new platforms
     weibo: Twitter,
     xiaohongshu: Instagram,
-    tiktok: Youtube,
+    douyin: Youtube,
   };
   return iconMap[platform] || Image;
 };
@@ -53,7 +53,7 @@ const getPlatformGradient = (platform: PlatformType) => {
     wechat: 'from-green-500 to-green-600',
     weibo: 'from-orange-500 to-red-500',
     xiaohongshu: 'from-pink-500 to-red-400',
-    tiktok: 'from-purple-600 to-pink-600',
+    douyin: 'from-purple-600 to-pink-600',
   };
   return colorMap[platform] || 'from-gray-500 to-gray-600';
 };
@@ -124,7 +124,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, onBack, onRegenerate
             </div>
           </div>
           <p className="text-white/90">
-            {PLATFORM_CONFIGS[platform as PlatformType]?.description || getPlatformDescription(platform)}
+            {PLATFORM_CONFIGS[platform as PlatformType]?.description || getPlatformDescription(platform as PlatformType)}
           </p>
         </div>
 
@@ -290,14 +290,18 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, onBack, onRegenerate
     );
   };
 
-  const getPlatformDescription = (platform: string): string => {
-    const descriptions = {
+  const getPlatformDescription = (platform: PlatformType): string => {
+    const descriptions: Record<PlatformType, string> = {
       pinterest: '发现式内容，适合美妆、时尚、家居、生活方式类内容',
       instagram: '互动式内容，适合个人品牌、生活方式、教育内容',
       twitter: '观点性内容，适合商业洞察、技术分享、个人思考',
       youtube: '视频内容，适合教程、评测、故事分享',
+      wechat: '社交化内容，适合私域运营、深度交流',
+      weibo: '热点化内容，适合话题传播、明星效应',
+      xiaohongshu: '种草化内容，适合产品推荐、生活分享、美妆时尚',
+      douyin: '短视频内容，适合娱乐搞笑、技能展示、直播带货',
     };
-    return descriptions[platform as keyof typeof descriptions] || '';
+    return descriptions[platform] || '';
   };
 
   return (

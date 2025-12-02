@@ -88,12 +88,22 @@ export async function GET(request: NextRequest) {
   if (test === 'api') {
     // 简单的API连接测试
     try {
-      const testInputs = {
+      const testInputs: {
+        niche: string;
+        targetAudience: string;
+        tone: 'Professional';
+        mainGoal: 'Sell Product';
+        productLink: string;
+        sellingPoints: string;
+        selectedPlatforms: ('pinterest' | 'instagram' | 'twitter' | 'youtube')[];
+      } = {
         niche: 'AI工具测试',
         targetAudience: '科技工作者',
-        tone: 'Professional' as const,
-        mainGoal: 'Sell Product' as const,
-        productLink: 'https://example.com'
+        tone: 'Professional',
+        mainGoal: 'Sell Product',
+        productLink: 'https://example.com',
+        sellingPoints: '高效、智能、易用的AI助手',
+        selectedPlatforms: ['pinterest', 'instagram', 'twitter', 'youtube']
       };
 
       console.log(`🧪 简单API测试开始...`);

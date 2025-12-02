@@ -38,7 +38,7 @@ export interface PlatformContent {
 
 export interface ContentResults {
   // 使用动态平台键值对，只包含用户选择的平台
-  [platform: string]: PlatformContent;
+  [platform: string]: PlatformContent | any;
   analytics: {
     totalGenerationTime: number;
     overallQualityScore: number;

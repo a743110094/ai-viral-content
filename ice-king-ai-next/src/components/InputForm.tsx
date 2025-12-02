@@ -22,12 +22,12 @@ const InputForm: React.FC<InputFormProps> = ({ onGenerate, isLoading, onBack }) 
     selectedPlatforms: DEFAULT_SELECTED_PLATFORMS
   });
 
-  const [errors, setErrors] = useState<Partial<ContentInputs>>({});
+  const [errors, setErrors] = useState<Partial<Record<keyof ContentInputs, string>>>({});
   const [isAnalyzingAudience, setIsAnalyzingAudience] = useState(false);
   const [isAnalyzingSellingPoints, setIsAnalyzingSellingPoints] = useState(false);
 
   const validateForm = (): boolean => {
-    const newErrors: Partial<ContentInputs> = {};
+    const newErrors: Partial<Record<keyof ContentInputs, string>> = {};
 
     if (!inputs.niche?.trim()) {
       newErrors.niche = '请输入你的领域或话题';

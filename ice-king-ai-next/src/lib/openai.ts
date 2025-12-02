@@ -148,12 +148,12 @@ export class OpenAIContentGenerator {
       wechat: '微信',
       weibo: '微博',
       xiaohongshu: '小红书',
-      tiktok: '抖音'
+      douyin: '抖音'
     };
     return names[platform] || platform;
   }
 
-  private buildPrompt(platform: string, inputs: ContentInputs): string {
+  private buildPrompt(platform: PlatformType, inputs: ContentInputs): string {
     const basePrompt = `
 请基于以下信息为${this.getPlatformDisplayName(platform)}平台生成专业营销内容：
 
@@ -218,7 +218,7 @@ export class OpenAIContentGenerator {
 - 包含实用的标签和关键词
 - 风格要贴近生活，有亲和力`,
       
-      tiktok: `- 适合抖音短视频创作
+      douyin: `- 适合抖音短视频创作
 - 内容要有趣、节奏感强
 - 开头3秒要有吸引力
 - 包含互动性元素

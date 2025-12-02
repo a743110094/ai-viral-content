@@ -17,7 +17,6 @@ class CacheService {
     if (redisUrl) {
       try {
         this.redis = new Redis(redisUrl, {
-          retryDelayOnFailover: 100,
           enableReadyCheck: false,
           maxRetriesPerRequest: 3,
         });
@@ -74,7 +73,9 @@ class CacheService {
         if (this.memoryCache.size >= this.MAX_MEMORY_CACHE_SIZE) {
           // Remove oldest entry
           const firstKey = this.memoryCache.keys().next().value;
-          this.memoryCache.delete(firstKey);
+          if (firstKey) {
+            this.memoryCache.delete(firstKey);
+          }
         }
         
         this.memoryCache.set(key, {
@@ -143,11 +144,15 @@ class CacheService {
   cleanupMemoryCache(): void {
     if (!this.redis) {
       const now = Date.now();
-      for (const [key, cached] of this.memoryCache.entries()) {
+      const keysToDelete: string[] = [];
+      this.memoryCache.forEach((cached, key) => {
         if (now - cached.timestamp > cached.ttl * 1000) {
-          this.memoryCache.delete(key);
+          keysToDelete.push(key);
         }
-      }
+      });
+      keysToDelete.forEach(key => {
+        this.memoryCache.delete(key);
+      });
     }
   }
 }

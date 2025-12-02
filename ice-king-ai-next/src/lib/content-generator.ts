@@ -26,13 +26,14 @@ export class ContentGenerator {
         if (cached) {
           console.log(`💾 缓存命中! 返回缓存结果 (${cacheKey})`);
           console.log(`⏱️  缓存响应时间: ${Date.now() - this.startTime}ms`);
+          const { analytics, ...platformContent } = cached;
           return {
-            ...cached,
+            ...platformContent,
             analytics: {
-              ...cached.analytics,
+              ...analytics,
               totalGenerationTime: Date.now() - this.startTime,
             }
-          };
+          } as unknown as ContentResults;
         }
       } else {
         console.log(`🔄 强制API模式: 跳过缓存检查`);
@@ -63,13 +64,14 @@ export class ContentGenerator {
       const generationTime = Date.now() - this.startTime;
 
       // Build results object dynamically
-      const results: ContentResults = {
+      const results = {
         analytics: {
           totalGenerationTime: generationTime,
           overallQualityScore: 0,
           viralPotential: 0,
+          generatedPlatforms: [],
         },
-      };
+      } as unknown as ContentResults;
 
       let totalQualityScore = 0;
       let validContentCount = 0;
@@ -79,6 +81,9 @@ export class ContentGenerator {
           const qualityScore = calculateQualityScore(content.mainContent, platform);
           totalQualityScore += qualityScore;
           validContentCount++;
+          
+          // Record generated platform
+          results.analytics.generatedPlatforms.push(platform);
 
           results[platform] = {
             ...content,
@@ -105,7 +110,7 @@ export class ContentGenerator {
       }
 
       console.log(`✅ 内容生成完成! 总耗时: ${generationTime}ms`);
-      return results;
+      return results as ContentResults;
 
     } catch (error) {
       console.error(`❌ 内容生成失败:`, error);

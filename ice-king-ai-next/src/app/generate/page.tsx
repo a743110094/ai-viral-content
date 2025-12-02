@@ -107,7 +107,7 @@ export default function GeneratePage() {
       return (
         <InputForm 
           onGenerate={handleGenerate} 
-          isLoading={appState === 'loading'}
+          isLoading={false}
           onBack={handleBackToHome}
         />
       );
