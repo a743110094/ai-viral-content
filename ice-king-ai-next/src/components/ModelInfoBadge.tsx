@@ -27,10 +27,10 @@ const ModelInfoBadge: React.FC<ModelInfoBadgeProps> = ({
   }
 
   return (
-    <div className={`inline-flex items-center gap-2 mx-8 bg-blue-500/10 border border-blue-400/30 rounded-full px-4 py-2 mb-8 ${className}`}>
-      <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
-      <Cpu className="w-3 h-3 text-blue-400" />
-      <span className="text-blue-300 text-sm font-medium">{displayText}</span>
+    <div className={`inline-flex items-center gap-3 mx-8 bg-blue-500/10 border border-blue-400/30 rounded-full px-6 py-3 mb-8 golden-border-glow ${className}`}>
+      <div className="w-3 h-3 bg-blue-400 rounded-full animate-pulse"></div>
+      <Cpu className="w-5 h-5 text-blue-400 golden-icon-glow" />
+      <span className="text-blue-300 text-base font-medium">{displayText}</span>
     </div>
   );
 };
