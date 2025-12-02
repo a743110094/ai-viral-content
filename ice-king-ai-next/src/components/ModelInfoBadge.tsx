@@ -17,7 +17,7 @@ interface ModelInfoBadgeProps {
 
 const ModelInfoBadge: React.FC<ModelInfoBadgeProps> = ({
   modelName = 'DeepSeek-V3.2-Speciale',
-  displayText = `基于最新的 ${modelName} 模型实现`,
+  displayText = `基于 ${modelName} `,
   showBadge = true,
   className = ''
 }) => {
