@@ -45,7 +45,10 @@ export class OpenAIContentGenerator {
       sellingPoints: inputs.sellingPoints,
       tone: inputs.tone,
       mainGoal: inputs.mainGoal,
-      productLink: inputs.productLink || '未提供'
+      productLink: inputs.productLink || '未提供',
+      hasImage: !!inputs.uploadedImage,
+      hasImageDescription: !!inputs.imageDescription,
+      imageDescription: inputs.imageDescription ? inputs.imageDescription.substring(0, 100) + '...' : '无'
     });
     
     if (forceApiCall) {
@@ -154,15 +157,25 @@ export class OpenAIContentGenerator {
   }
 
   private buildPrompt(platform: PlatformType, inputs: ContentInputs): string {
-    const basePrompt = `
-请基于以下信息为${this.getPlatformDisplayName(platform)}平台生成专业营销内容：
-
+    // 构建基础信息
+    let baseInfo = `
 领域/话题: ${inputs.niche}
 目标受众: ${inputs.targetAudience}
 产品卖点: ${inputs.sellingPoints}
 文案风格: ${inputs.tone}
 营销目标: ${inputs.mainGoal}
-产品链接: ${inputs.productLink}
+产品链接: ${inputs.productLink}`;
+
+    // 如果有图片描述，添加到提示词中
+    if (inputs.imageDescription) {
+      baseInfo += `
+参考图片描述: ${inputs.imageDescription}`;
+    }
+
+    const basePrompt = `
+请基于以下信息为${this.getPlatformDisplayName(platform)}平台生成专业营销内容：
+
+${baseInfo}
 
 请严格按照以下JSON格式返回内容，不要包含任何其他文字：
 

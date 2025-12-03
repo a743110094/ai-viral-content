@@ -25,6 +25,9 @@ export interface ContentInputs {
   mainGoal: 'Grow Followers' | 'Drive Affiliate Clicks' | 'Sell Product' | 'Build Brand Awareness';
   // 新增：选择要生成内容的平台
   selectedPlatforms: PlatformType[];
+  // 新增：图片上传相关字段
+  uploadedImage?: string; // Base64编码的图片数据
+  imageDescription?: string; // AI生成的图片描述，对用户不可见
 }
 
 export interface PlatformContent {
