@@ -6,12 +6,16 @@ import { ContentInputs } from '@/types/content';
 import SimpleAnalyzeLoading from '../SimpleAnalyzeLoading';
 
 interface Step1BasicInfoProps {
-  data: Partial<ContentInputs>;
-  onDataChange: (data: Partial<ContentInputs>) => void;
+  data?: Partial<ContentInputs>;
+  onDataChange?: (data: Partial<ContentInputs>) => void;
   isValidating?: boolean;
 }
 
-const Step1BasicInfo: React.FC<Step1BasicInfoProps> = ({ data, onDataChange, isValidating }) => {
+const Step1BasicInfo: React.FC<Step1BasicInfoProps> = ({ 
+  data = {}, 
+  onDataChange = () => {}, 
+  isValidating = false 
+}) => {
   const [errors, setErrors] = React.useState<{ niche?: string }>({});
   const [uploadedImage, setUploadedImage] = useState<string>('');
   const [isAnalyzingImage, setIsAnalyzingImage] = useState(false);

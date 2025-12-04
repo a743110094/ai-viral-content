@@ -5,12 +5,16 @@ import { Zap, CheckCircle, ArrowRight, Sparkles } from 'lucide-react';
 import { ContentInputs, PLATFORM_CONFIGS } from '@/types/content';
 
 interface Step4ConfirmationProps {
-  data: Partial<ContentInputs>;
-  onDataChange: (data: Partial<ContentInputs>) => void;
+  data?: Partial<ContentInputs>;
+  onDataChange?: (data: Partial<ContentInputs>) => void;
   isValidating?: boolean;
 }
 
-const Step4Confirmation: React.FC<Step4ConfirmationProps> = ({ data, isValidating }) => {
+const Step4Confirmation: React.FC<Step4ConfirmationProps> = ({ 
+  data = {}, 
+  onDataChange = () => {}, 
+  isValidating = false 
+}) => {
   // 计算预计生成时间
   const estimatedTime = data.selectedPlatforms ? data.selectedPlatforms.length * 3 : 12;
 

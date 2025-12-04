@@ -5,12 +5,16 @@ import { Smartphone, CheckCircle } from 'lucide-react';
 import { ContentInputs, PlatformType, PLATFORM_CONFIGS, DEFAULT_SELECTED_PLATFORMS } from '@/types/content';
 
 interface Step3PlatformStyleProps {
-  data: Partial<ContentInputs>;
-  onDataChange: (data: Partial<ContentInputs>) => void;
+  data?: Partial<ContentInputs>;
+  onDataChange?: (data: Partial<ContentInputs>) => void;
   isValidating?: boolean;
 }
 
-const Step3PlatformStyle: React.FC<Step3PlatformStyleProps> = ({ data, onDataChange, isValidating }) => {
+const Step3PlatformStyle: React.FC<Step3PlatformStyleProps> = ({ 
+  data = {}, 
+  onDataChange = () => {}, 
+  isValidating = false 
+}) => {
   const [errors, setErrors] = React.useState<{ selectedPlatforms?: string }>({});
   const [recommendedPlatforms, setRecommendedPlatforms] = useState<PlatformType[]>([]);
 
@@ -106,7 +110,7 @@ const Step3PlatformStyle: React.FC<Step3PlatformStyleProps> = ({ data, onDataCha
     }
 
     // 去重并返回
-    return [...new Set(recommendations)];
+    return Array.from(new Set(recommendations));
   };
 
   // 获取平台推荐原因

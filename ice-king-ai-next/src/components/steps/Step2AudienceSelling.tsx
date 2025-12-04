@@ -6,12 +6,16 @@ import { ContentInputs } from '@/types/content';
 import SimpleAnalyzeLoading from '../SimpleAnalyzeLoading';
 
 interface Step2AudienceSellingProps {
-  data: Partial<ContentInputs>;
-  onDataChange: (data: Partial<ContentInputs>) => void;
+  data?: Partial<ContentInputs>;
+  onDataChange?: (data: Partial<ContentInputs>) => void;
   isValidating?: boolean;
 }
 
-const Step2AudienceSelling: React.FC<Step2AudienceSellingProps> = ({ data, onDataChange, isValidating }) => {
+const Step2AudienceSelling: React.FC<Step2AudienceSellingProps> = ({ 
+  data = {}, 
+  onDataChange = () => {}, 
+  isValidating = false 
+}) => {
   const [errors, setErrors] = React.useState<{ targetAudience?: string; sellingPoints?: string }>({});
   const [isAnalyzingAudience, setIsAnalyzingAudience] = useState(false);
   const [isAnalyzingSellingPoints, setIsAnalyzingSellingPoints] = useState(false);
