@@ -5,6 +5,48 @@ export type PlatformType =
   | 'pinterest' | 'instagram' | 'twitter' | 'youtube'  // 国外平台
   | 'wechat' | 'weibo' | 'xiaohongshu' | 'douyin';      // 中国平台
 
+// 生图相关类型
+export interface ImageGeneration {
+  id: string;
+  prompt: string;
+  imageUrl: string;
+  model: string;
+  provider: string;
+  size: string;
+  quality: string;
+  generationTime: number;
+  parameters: {
+    temperature: number;
+    n: number;
+  };
+  status: 'success' | 'failed';
+  errorMessage?: string;
+}
+
+export interface ImageGenerationRequest {
+  prompts: string[];
+  selectedPlatforms: PlatformType[];
+  config?: {
+    modelName?: string;
+    size?: string;
+    quality?: string;
+    temperature?: number;
+    n?: number;
+  };
+  requestId?: string;
+}
+
+export interface VisualPromptEnhancement {
+  environment: string;
+  foreground: string;
+  background: string;
+  colorScheme: string;
+  mood: string;
+  style: string;
+  lighting: string;
+  composition: string;
+}
+
 // 平台配置信息
 export interface PlatformConfig {
   name: PlatformType;

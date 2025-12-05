@@ -63,6 +63,10 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, onBack, onRegenerate
   const [copiedText, setCopiedText] = useState<string | null>(null);
   const [showImageDialog, setShowImageDialog] = useState(false);
   const [imagePrompt, setImagePrompt] = useState('');
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+  const [generationError, setGenerationError] = useState<string | null>(null);
+  const [generationProgress, setGenerationProgress] = useState('');
 
   // Get available platforms (exclude analytics)
   const platforms = Object.keys(results).filter(key => key !== 'analytics') as Array<keyof ContentResults>;
@@ -88,14 +92,69 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, onBack, onRegenerate
     navigator.clipboard.writeText(text);
   };
 
-  const handleGenerateImage = (prompt: string) => {
+  const handleGenerateImage = async (prompt: string) => {
     setImagePrompt(prompt);
+    setIsGenerating(true);
+    setGeneratedImage(null);
+    setGenerationError(null);
+    setGenerationProgress('正在初始化生图服务...');
     setShowImageDialog(true);
+
+    try {
+      setGenerationProgress('正在生成图片...');
+      
+      // 调用生图API
+      const response = await fetch('/api/image-generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompts: [prompt],
+          selectedPlatforms: [activeTab], // 使用当前激活的平台
+          config: {
+            size: '1024x1024',
+            quality: 'standard',
+            n: 1
+          }
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error?.message || '图片生成失败');
+      }
+
+      if (data.success && data.data.results && data.data.results.length > 0) {
+        const result = data.data.results[0];
+        if (result.status === 'success' && result.imageUrl) {
+          setGeneratedImage(result.imageUrl);
+          setGenerationProgress('图片生成成功！');
+        } else {
+          throw new Error(result.errorMessage || '图片生成失败');
+        }
+      } else {
+        throw new Error('未收到生成结果');
+      }
+
+    } catch (error) {
+      console.error('图片生成失败:', error);
+      const errorMessage = error instanceof Error ? error.message : '图片生成失败，请稍后重试';
+      setGenerationError(errorMessage);
+      setGenerationProgress('');
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const closeImageDialog = () => {
     setShowImageDialog(false);
     setImagePrompt('');
+    setGeneratedImage(null);
+    setGenerationError(null);
+    setGenerationProgress('');
+    setIsGenerating(false);
   };
 
   const renderPlatformContent = (platform: keyof ContentResults, data: any) => {
@@ -407,7 +466,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, onBack, onRegenerate
       {/* 生图功能对话框 */}
       {showImageDialog && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 max-w-md w-full shadow-2xl">
+          <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 max-w-2xl w-full shadow-2xl">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-white flex items-center gap-2">
                 <Camera className="w-5 h-5 text-green-400" />
@@ -426,40 +485,86 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, onBack, onRegenerate
                 <p className="text-sm text-slate-300 mb-2">选中的提示词：</p>
                 <p className="text-white text-sm">{imagePrompt}</p>
               </div>
-              
-              <div className="text-center py-4">
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-500/20 border border-yellow-400/30 rounded-lg text-yellow-300">
-                  <Clock className="w-4 h-4" />
-                  <span className="text-sm">此功能正在迭代中...</span>
+
+              {/* 生成进度显示 */}
+              {isGenerating && (
+                <div className="bg-blue-500/10 border border-blue-400/30 rounded-lg p-4">
+                  <div className="flex items-center gap-3 mb-2">
+                    <RefreshCw className="w-5 h-5 text-blue-400 animate-spin" />
+                    <span className="text-blue-300 font-medium">正在生成图片...</span>
+                  </div>
+                  <p className="text-blue-200 text-sm">{generationProgress}</p>
                 </div>
-              </div>
+              )}
+
+              {/* 错误显示 */}
+              {generationError && (
+                <div className="bg-red-500/10 border border-red-400/30 rounded-lg p-4">
+                  <div className="flex items-center gap-3 mb-2">
+                    <X className="w-5 h-5 text-red-400" />
+                    <span className="text-red-300 font-medium">生成失败</span>
+                  </div>
+                  <p className="text-red-200 text-sm">{generationError}</p>
+                </div>
+              )}
+
+              {/* 生成的图片显示 */}
+              {generatedImage && (
+                <div className="bg-slate-900/70 rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                    <span className="text-green-300 font-medium">生成成功！</span>
+                  </div>
+                  <div className="relative bg-slate-800 rounded-lg overflow-hidden">
+                    <img 
+                      src={generatedImage} 
+                      alt="AI生成的图片"
+                      className="w-full h-auto max-h-96 object-contain"
+                    />
+                  </div>
+                  <div className="flex gap-2 mt-3">
+                    <button
+                      onClick={() => {
+                        const link = document.createElement('a');
+                        link.href = generatedImage;
+                        link.download = `ai-generated-${Date.now()}.png`;
+                        link.click();
+                      }}
+                      className="flex-1 px-3 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg text-sm transition-colors flex items-center justify-center gap-2"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      下载图片
+                    </button>
+                    <button
+                      onClick={() => window.open(generatedImage, '_blank')}
+                      className="flex-1 px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm transition-colors flex items-center justify-center gap-2"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      打开原图
+                    </button>
+                  </div>
+                </div>
+              )}
               
-              <p className="text-slate-400 text-sm text-center">
-                此功能正在迭代中，请在 
-                <span className="text-yellow-400 font-bold text-base mx-1 px-2 py-1 bg-yellow-400/10 rounded-lg border border-yellow-400/30">
-                  评论区
-                </span>
-                呼唤此功能，
-                <br />
-                我们将优先为您开放AI生图功能！
-              </p>
-              
+              {/* 操作按钮 */}
               <div className="flex gap-3 pt-2">
                 <button
                   onClick={closeImageDialog}
                   className="flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
                 >
-                  我知道了
+                  关闭
                 </button>
-                <button
-                  onClick={() => {
-                    copyToClipboard(imagePrompt);
-                    closeImageDialog();
-                  }}
-                  className="flex-1 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
-                >
-                  复制提示词
-                </button>
+                {!isGenerating && (
+                  <button
+                    onClick={() => {
+                      copyToClipboard(imagePrompt);
+                      closeImageDialog();
+                    }}
+                    className="flex-1 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
+                  >
+                    复制提示词
+                  </button>
+                )}
               </div>
             </div>
           </div>
