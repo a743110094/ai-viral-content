@@ -137,6 +137,7 @@ const StepWizard: React.FC<StepWizardProps> = ({ steps, onComplete, onCancel, cl
             {React.cloneElement(steps[currentStep].component as React.ReactElement, {
               onDataChange: (data: any) => handleStepData(steps[currentStep].id, data),
               data: stepData[steps[currentStep].id] || {},
+              allStepData: stepData, // 传递所有步骤的数据给当前步骤
               isValidating: isValidating
             })}
           </div>

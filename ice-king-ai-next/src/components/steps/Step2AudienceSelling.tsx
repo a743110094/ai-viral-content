@@ -9,13 +9,19 @@ interface Step2AudienceSellingProps {
   data?: Partial<ContentInputs>;
   onDataChange?: (data: Partial<ContentInputs>) => void;
   isValidating?: boolean;
+  allStepData?: Record<string, any>; // 接收所有步骤的数据
 }
 
 const Step2AudienceSelling: React.FC<Step2AudienceSellingProps> = ({ 
   data = {}, 
   onDataChange = () => {}, 
-  isValidating = false 
+  isValidating = false,
+  allStepData = {}
 }) => {
+  // 获取niche字段（从当前步骤数据或从第一步数据中获取）
+  const getNiche = () => {
+    return data.niche?.trim() || allStepData?.step1?.niche?.trim() || '';
+  };
   const [errors, setErrors] = React.useState<{ targetAudience?: string; sellingPoints?: string }>({});
   const [isAnalyzingAudience, setIsAnalyzingAudience] = useState(false);
   const [isAnalyzingSellingPoints, setIsAnalyzingSellingPoints] = useState(false);
@@ -50,7 +56,7 @@ const Step2AudienceSelling: React.FC<Step2AudienceSellingProps> = ({
   };
 
   const handleAnalyzeAudience = async () => {
-    if (!data.niche?.trim()) {
+    if (!getNiche()) {
       setErrors(prev => ({ ...prev, targetAudience: '请先填写领域/话题信息' }));
       return;
     }
@@ -65,7 +71,7 @@ const Step2AudienceSelling: React.FC<Step2AudienceSellingProps> = ({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          niche: data.niche,
+          niche: getNiche(),
           topic: ''
         }),
       });
@@ -100,7 +106,7 @@ const Step2AudienceSelling: React.FC<Step2AudienceSellingProps> = ({
   };
 
   const handleAnalyzeSellingPoints = async () => {
-    if (!data.niche?.trim()) {
+    if (!getNiche()) {
       setErrors(prev => ({ ...prev, sellingPoints: '请先填写领域/话题信息' }));
       return;
     }
@@ -115,7 +121,7 @@ const Step2AudienceSelling: React.FC<Step2AudienceSellingProps> = ({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          niche: data.niche,
+          niche: getNiche(),
           topic: ''
         }),
       });
@@ -212,7 +218,7 @@ const Step2AudienceSelling: React.FC<Step2AudienceSellingProps> = ({
             <button
               type="button"
               onClick={handleAnalyzeAudience}
-              disabled={isValidating || isAnalyzingAudience || !data.niche?.trim()}
+              disabled={isValidating || isAnalyzingAudience || !getNiche()}
               className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:from-purple-400 hover:to-pink-400 focus:outline-none focus:ring-2 focus:ring-purple-400/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-purple-500/25"
               title="智能分析目标受众"
             >
@@ -278,7 +284,7 @@ const Step2AudienceSelling: React.FC<Step2AudienceSellingProps> = ({
             <button
               type="button"
               onClick={handleAnalyzeSellingPoints}
-              disabled={isValidating || isAnalyzingSellingPoints || !data.niche?.trim()}
+              disabled={isValidating || isAnalyzingSellingPoints || !getNiche()}
               className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:from-yellow-400 hover:to-orange-400 focus:outline-none focus:ring-2 focus:ring-yellow-400/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-yellow-500/25"
               title="智能分析产品卖点"
             >
